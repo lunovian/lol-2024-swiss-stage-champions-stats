@@ -3,14 +3,16 @@ import pandas as pd
 # Load the CSV file
 df = pd.read_csv('champions.csv')
 
-# Function to remove duplicate names
+# Function to remove duplicate consecutive words in champion names
 def remove_duplicate_name(name):
-    parts = name.split()
-    if len(parts) == 2 and parts[0] == parts[1]:
-        return parts[0]
-    return name
+    words = name.split()
+    cleaned_name = []
+    for i, word in enumerate(words):
+        if i == 0 or word.lower() != words[i - 1].lower():  # Avoid duplicate consecutive words
+            cleaned_name.append(word.capitalize())
+    return ' '.join(cleaned_name)
 
-# Apply the function to the 'champion name' column
+# Apply the function to the 'Champion' column
 df['Champion'] = df['Champion'].apply(remove_duplicate_name)
 
 # Save the modified DataFrame back to CSV
